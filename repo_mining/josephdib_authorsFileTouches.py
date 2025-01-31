@@ -27,7 +27,7 @@ def countfiles(dictfiles, lsttokens, repo):
     ipage = 1  # url page counter
     ct = 0  # token counter
 
-    #File extentions to grab from
+    # file extentions to grab from
     file_exts = ['.py', '.java', '.js', '.cpp', '.c', '.cs', '.kts', '.kt', '.rb', '.go', '.php', '.html', '.css']
 
     try:

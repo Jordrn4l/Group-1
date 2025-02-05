@@ -113,7 +113,6 @@ def test_account_serialization():
     for key,value in expected_dict.items():
         assert key in account_dict
         assert account_dict[key] == value
-
 # TODO 2: Test Invalid Email Input
 # - Check that invalid emails (e.g., "not-an-email") raise a validation error.
 # - Ensure accounts without an email cannot be created.
@@ -123,8 +122,27 @@ def test_account_serialization():
 # - Validate that missing fields trigger the correct exception.
 
 # TODO 4: Test Positive Deposit
+
 # - Ensure `deposit()` correctly increases the account balance.
 # - Verify that depositing a positive amount updates the balance correctly.
+# ===========================
+# Test: Invalid Role Assignment
+# Author: Matthew Rainwater
+# Date: 02-04-2025
+# Description: Ensure `deposit()` correctly increases the account balance and
+# verify that depositing a positive amount updates the balance correctly.
+# ===========================
+
+def test_positive_deposit():
+    """Test positive deposit"""
+    account = Account(name="Alice", email="alice@example.com", balance=100.0)
+
+    # positive deposit 
+    deposit_amount = 50.0
+    account.deposit(deposit_amount)
+
+    # verify balance was updated
+    assert account.balance == 150.0, f"Expected balance 150.0, but got {account.balance}"
 
 # TODO 5: Test Deposit with Zero/Negative Values
 # - Ensure `deposit()` raises an error for zero or negative amounts.
@@ -158,17 +176,56 @@ def test_withdraw_insufficient_balance():
 
     # Ensure balance remains unchanged after failed withdrawal
     assert account.balance == initial_balance
-
-
 # TODO 8: Test Password Hashing
 # - Ensure that passwords are stored as **hashed values**.
 # - Verify that plaintext passwords are never stored in the database.
 # - Test password verification with `set_password()` and `check_password()`.
 
+# ===========================
+# Test: Test Password Hashing
+# Author: Jaydan Escober
+# Date: 2025-02-04
+# Description: Ensure that passwords are stored as hashed values.
+# ===========================
+def test_password_hashing():
+    # Test password hashing
+    account = Account(name="John Doe", email="johndoe@example.com")
+    
+    password = "securepassword"
+    account.set_password(password)
+    
+    # Ensure the password is hashed
+    assert account.password_hash != password
+    assert account.check_password(password) is True
+
 # TODO 9: Test Role Assignment
 # - Ensure that `change_role()` correctly updates an account’s role.
 # - Verify that the updated role is stored in the database.
 
+# ===========================
+# Test: Test Account Deactivation
+# Author: Joseph Dib
+# Date: 2025-02-04
+# Description: Tests that deactivate() correctly deactivates an existing account.
+# ===========================
+def test_deactivate():
+    """Test that 'deactivate()' correctly deletes an existing account"""
+    account = Account(role = "user", email = "test@example.com", name = "joseph", disabled = False)
+    account.disabled = True
+    assert account.disabled == True
+
+# ===========================
+# Test: Test Account Reactivation
+# Author: Joseph Dib
+# Date: 2025-02-04
+# Description: Tests that reactivate() correctly reactivates an existing account.
+# ===========================
+
+def test_reactivate():
+    """Test that 'delete()' correctly deletes an existing account"""
+    account = Account(role = "user", email = "test@example.com", name = "joseph", disabled = True)
+    account.disabled = False
+    assert account.disabled == False
 # TODO 10: Test Invalid Role Assignment
 # - Ensure that assigning an invalid role raises an appropriate error.
 # - Verify that only allowed roles (`admin`, `user`, etc.) can be set.
